@@ -1,6 +1,6 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+-- if true then return {} end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -12,11 +12,30 @@ return {
   -- add gruvbox
   { "ellisonleao/gruvbox.nvim" },
 
+  -- solarized osaka
+  {
+    "craftzdog/solarized-osaka.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+    },
+  },
+  { "mbbill/undotree", lazy = false },
+  { "Bekaboo/deadcolumn.nvim", event = "VeryLazy" },
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "elflord",
     },
   },
 
@@ -28,7 +47,7 @@ return {
   },
 
   -- disable trouble
-  { "folke/trouble.nvim", enabled = false },
+  { "folke/trouble.nvim", enabled = true },
 
   -- override nvim-cmp and add cmp-emoji
   {
@@ -72,6 +91,17 @@ return {
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
+        clangd = {
+          cmd = {
+            "clangd",
+            "--background-index",
+            "--clang-tidy",
+            "--header-insertion=iwyu",
+            "--completion-style=detailed",
+            "--function-arg-placeholders",
+            "--fallback-style=llvm",
+          },
+        },
       },
     },
   },
@@ -122,7 +152,6 @@ return {
       ensure_installed = {
         "bash",
         "html",
-        "javascript",
         "json",
         "lua",
         "markdown",
@@ -130,14 +159,12 @@ return {
         "python",
         "query",
         "regex",
-        "tsx",
-        "typescript",
         "vim",
-        "yaml",
+        "yaml"
       },
     },
-  },
 
+  },
   -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
   -- would overwrite `ensure_installed` with the new value.
   -- If you'd rather extend the default config, use the code below instead:
@@ -156,13 +183,13 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, {
-        function()
-          return "😄"
-        end,
-      })
-    end,
+    -- opts = function(_, opts)
+    --   table.insert(opts.sections.lualine_x, {
+    --     function()
+    --       return "😄"
+    --     end,
+    --   })
+    -- end,
   },
 
   -- or you can return new options to override all the defaults
@@ -172,15 +199,22 @@ return {
     opts = function()
       return {
         --[[add your custom lualine config here]]
+        options = {
+          theme = "iceberg_dark",
+          section_separators = '', component_separators = ''
+        },
+        sections = {
+          lualine_x = { 'filetype'}
+        }
       }
     end,
   },
 
   -- use mini.starter instead of alpha
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
+  -- { import = "lazyvim.plugins.extras.ui.mini-starter" },
 
   -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
-  { import = "lazyvim.plugins.extras.lang.json" },
+  -- { import = "lazyvim.plugins.extras.lang.json" },
 
   -- add any tools you want to have installed below
   {
@@ -194,4 +228,14 @@ return {
       },
     },
   },
+
+  {
+    "echasnovski/mini.ai",
+    enabled=false
+  },
+  {
+    "echasnovski/mini.animate",
+    enabled=false
+  },
+
 }
